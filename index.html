@@ -1,0 +1,471 @@
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+ --bg:#f7f7fb;--bg2:#ededf5;--bg3:#e2e2ec;
+ --ink:#0c0c14;--ink2:#3a3a52;--ink3:#8888a8;
+ --line:rgba(0,0,0,0.07);--line2:rgba(0,0,0,0.11);
+ --acc:#4f46e5;--acc2:#7c3aed;
+ --g:#059669;--a:#d97706;--r:#dc2626;--b:#2563eb;
+}
+@media(prefers-color-scheme:dark){
+ :root{
+ --bg:#0c0c14;--bg2:#13131f;--bg3:#1c1c2c;
+ --ink:#f0f0fa;--ink2:#b0b0d0;--ink3:#5a5a7a;
+ --line:rgba(255,255,255,0.06);--line2:rgba(255,255,255,0.1);
+ --acc:#818cf8;--acc2:#a78bfa;
+ --g:#34d399;--a:#fbbf24;--r:#f87171;--b:#60a5fa;
+ }
+}
+@keyframes breathe{0%,100%{opacity:1}50%{opacity:0.25}}
+@keyframes scan{0%{left:-60%}100%{left:140%}}
+@keyframes fadein{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+@keyframes ringout{0%{transform:scale(1);opacity:0.4}100%{transform:scale(2.4);opacity:0}}
+
+body,div,span{font-family:var(--font-sans,system-ui,-apple-system,sans-serif)}
+.mc{background:var(--bg);padding:18px;width:100%}
+
+.topbar{display:flex;align-items:center;justify-content:space-between;background:var(--bg2);border:1px solid var(--line2);border-radius:16px;padding:13px 20px;margin-bottom:14px;position:relative;overflow:hidden}
+.tscan{position:absolute;top:0;bottom:0;width:60%;background:linear-gradient(90deg,transparent,rgba(79,70,229,0.06),transparent);animation:scan 5s linear infinite;pointer-events:none}
+.brand{display:flex;align-items:center;gap:12px}
+.blogo{width:38px;height:38px;border-radius:11px;background:var(--acc);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:#fff;letter-spacing:-0.5px;position:relative;flex-shrink:0}
+.blogo-ring{position:absolute;inset:-5px;border-radius:16px;border:1.5px solid var(--acc);opacity:0.25;animation:ringout 2.5s ease-out infinite}
+.bname{font-size:14px;font-weight:600;color:var(--ink);letter-spacing:-0.3px;line-height:1.2}
+.bsrv{font-size:10px;color:var(--ink3);font-family:monospace;margin-top:2px}
+.tpills{display:flex;align-items:center;gap:8px}
+.pill{display:flex;align-items:center;gap:5px;font-size:11px;color:var(--ink2);padding:5px 11px;border-radius:20px;border:1px solid var(--line2);background:var(--bg);white-space:nowrap}
+.pdot{width:6px;height:6px;border-radius:50%;flex-shrink:0}
+.pg{background:var(--g);animation:breathe 2s infinite}
+.pa{background:var(--a);animation:breathe 1.5s infinite}
+.tright{display:flex;flex-direction:column;align-items:flex-end;gap:2px}
+.clock{font-family:monospace;font-size:20px;font-weight:600;color:var(--ink);letter-spacing:2px;line-height:1}
+.dstr{font-size:10px;color:var(--ink3);letter-spacing:0.05em}
+
+.kpi-row{display:grid;grid-template-columns:repeat(4,1fr);gap:11px;margin-bottom:14px}
+.kpi{background:var(--bg2);border:1px solid var(--line);border-radius:14px;padding:15px 17px;position:relative;overflow:hidden;animation:fadein 0.4s ease both}
+.kstripe{position:absolute;top:0;left:0;right:0;height:2.5px;border-radius:14px 14px 0 0}
+.klabel{font-size:10px;color:var(--ink3);letter-spacing:0.09em;margin-bottom:5px;font-weight:500}
+.kval{font-size:24px;font-weight:600;color:var(--ink);line-height:1;letter-spacing:-1px}
+.kvalsm{font-size:15px;font-weight:600;color:var(--ink);line-height:1;padding-top:5px}
+.ksub{font-size:11px;color:var(--ink3);margin-top:4px}
+.kbadge{display:inline-flex;align-items:center;gap:3px;font-size:10px;font-weight:600;padding:2px 7px;border-radius:5px;margin-top:5px}
+.kb-g{background:rgba(5,150,105,0.1);color:var(--g)}
+.kb-a{background:rgba(217,119,6,0.1);color:var(--a)}
+.kb-b{background:rgba(37,99,235,0.1);color:var(--b)}
+
+.bodygrid{display:grid;grid-template-columns:1fr 300px;gap:13px;margin-bottom:13px}
+.panel{background:var(--bg2);border:1px solid var(--line);border-radius:16px;padding:17px;animation:fadein 0.5s ease both}
+.ph{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
+.pt{font-size:10px;font-weight:700;letter-spacing:0.1em;color:var(--ink3)}
+.pact{font-size:11px;color:var(--acc);padding:3px 9px;border-radius:6px;border:1px solid transparent;background:rgba(79,70,229,0.08);cursor:pointer;transition:background 0.15s;white-space:nowrap}
+.pact:hover{background:rgba(79,70,229,0.16)}
+
+.agrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}
+
+.acard{background:var(--bg);border:1px solid var(--line2);border-radius:12px;padding:13px;cursor:pointer;transition:border-color 0.15s,transform 0.12s;position:relative;overflow:hidden}
+.acard:hover{border-color:var(--acc);transform:translateY(-1px)}
+.acard.sel{border-color:var(--acc);border-width:1.5px}
+.astripe{position:absolute;top:0;left:0;right:0;height:2px}
+.atop{display:flex;align-items:center;gap:9px;margin-bottom:9px}
+.av{width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0;position:relative}
+.avo::after{content:'';position:absolute;bottom:0;right:0;width:8px;height:8px;border-radius:50%;background:var(--g);border:2px solid var(--bg)}
+.avi::after{content:'';position:absolute;bottom:0;right:0;width:8px;height:8px;border-radius:50%;background:var(--ink3);border:2px solid var(--bg)}
+.an{font-size:13px;font-weight:600;color:var(--ink);line-height:1.2}
+.ar{font-size:10px;color:var(--ink3);margin-top:1px}
+.atask{font-size:11px;color:var(--ink2);margin-bottom:7px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.abarbg{height:3px;background:var(--bg3);border-radius:3px;overflow:hidden;margin-bottom:4px}
+.abar{height:3px;border-radius:3px;transition:width 1s ease}
+.afoot{display:flex;justify-content:space-between}
+.afl,.afr{font-size:10px;color:var(--ink3)}
+
+.awide{grid-column:span 2}
+.awide-body{display:grid;grid-template-columns:auto 1fr;gap:16px;align-items:center}
+.awide-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:10px}
+.astat{background:var(--bg2);border-radius:8px;padding:8px 10px;text-align:center}
+.astat-v{font-size:16px;font-weight:600;color:var(--ink)}
+.astat-l{font-size:10px;color:var(--ink3);margin-top:2px}
+
+.logwrap{display:flex;flex-direction:column;gap:0;max-height:300px;overflow-y:auto}
+.logwrap::-webkit-scrollbar{width:2px}
+.logwrap::-webkit-scrollbar-thumb{background:var(--line2);border-radius:2px}
+.logrow{display:flex;align-items:flex-start;gap:7px;padding:7px 0;border-bottom:1px solid var(--line);animation:fadein 0.25s ease}
+.logrow:last-child{border-bottom:none}
+.logt{font-size:10px;color:var(--ink3);font-family:monospace;flex-shrink:0;padding-top:1px;min-width:38px}
+.lchip{font-size:9px;font-weight:700;letter-spacing:0.05em;padding:2px 6px;border-radius:4px;flex-shrink:0;margin-top:1px}
+.lc-hulk{background:rgba(186,117,23,0.13);color:#633806}
+.lc-jarvis{background:rgba(83,74,183,0.13);color:#3C3489}
+.lc-forge{background:rgba(29,158,117,0.13);color:#085041}
+.lc-jack{background:rgba(37,99,235,0.13);color:#1e40af}
+.lc-aish{background:rgba(212,83,126,0.13);color:#72243E}
+.lc-mark{background:rgba(99,153,34,0.13);color:#27500A}
+.lc-nova{background:rgba(216,90,48,0.13);color:#712B13}
+.lc-sys{background:var(--line2);color:var(--ink3)}
+@media(prefers-color-scheme:dark){.lc-hulk{color:#FAC775}.lc-jarvis{color:#AFA9EC}.lc-forge{color:#9FE1CB}.lc-jack{color:#85B7EB}.lc-aish{color:#ED93B1}.lc-mark{color:#C0DD97}.lc-nova{color:#F0997B}}
+.lmsg{font-size:11px;color:var(--ink2);line-height:1.4}
+
+.ilist{display:flex;flex-direction:column}
+.ir{display:flex;align-items:center;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--line)}
+.ir:last-child{border-bottom:none}
+.irl{font-size:12px;color:var(--ink3)}
+.irv{font-size:11px;font-weight:500;color:var(--ink);display:flex;align-items:center;gap:5px}
+.iok{color:var(--g)}.iwarn{color:var(--a)}
+.imono{font-family:monospace;font-size:10px}
+
+.botgrid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:13px}
+
+.qabtn{width:100%;text-align:left;padding:10px 12px;border-radius:10px;border:1px solid var(--line2);background:var(--bg);cursor:pointer;transition:border-color 0.15s,background 0.15s;margin-bottom:7px;display:flex;align-items:center;gap:10px}
+.qabtn:last-child{margin-bottom:0}
+.qabtn:hover{border-color:var(--acc);background:rgba(79,70,229,0.04)}
+.qa-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.qa-label{font-size:12px;font-weight:500;color:var(--ink)}
+.qa-sub{font-size:10px;color:var(--ink3);margin-top:1px}
+.qa-arr{margin-left:auto;font-size:12px;color:var(--ink3)}
+
+.cronwarn{padding:8px 10px;border-radius:8px;background:rgba(217,119,6,0.07);border:1px solid rgba(217,119,6,0.18);margin-bottom:11px}
+.cronrow{display:flex;align-items:center;justify-content:space-between;padding:6px 0;border-bottom:1px solid var(--line)}
+.cronrow:last-child{border-bottom:none}
+.cn{font-size:11px;font-weight:500;color:var(--ink)}
+.ct{font-size:10px;color:var(--ink3);margin-top:1px}
+.badge{font-size:10px;font-weight:600;padding:2px 8px;border-radius:20px;white-space:nowrap}
+.boff{background:var(--line);color:var(--ink3)}
+.bon{background:rgba(5,150,105,0.1);color:var(--g)}
+
+.comrow{display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--line)}
+.comrow:last-child{border-bottom:none}
+.comleft{display:flex;align-items:center;gap:10px}
+.comicon{width:30px;height:30px;border-radius:9px;background:var(--bg);border:1px solid var(--line2);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:var(--ink2);flex-shrink:0}
+.comname{font-size:12px;font-weight:500;color:var(--ink)}
+.comsub{font-size:10px;color:var(--ink3);margin-top:1px}
+
+.iempty{font-size:12px;color:var(--ink3);text-align:center;padding:28px 0;line-height:1.6}
+.iav{width:44px;height:44px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;flex-shrink:0}
+.inspect-row{display:flex;align-items:baseline;justify-content:space-between;padding:6px 0;border-bottom:1px solid var(--line)}
+.inspect-row:last-child{border-bottom:none}
+.ik{font-size:11px;color:var(--ink3)}
+.iv{font-size:11px;font-weight:500;color:var(--ink);font-family:monospace;text-align:right;max-width:150px;word-break:break-all}
+.ibtn{width:100%;margin-top:12px;padding:9px;border-radius:9px;font-size:12px;font-weight:600;background:var(--acc);color:#fff;border:none;cursor:pointer;transition:opacity 0.15s;letter-spacing:0.02em}
+.ibtn:hover{opacity:0.82}
+.itaskbox{margin-top:10px;padding:10px;border-radius:9px;background:var(--bg);border:1px solid var(--line2)}
+</style>
+
+<div class="mc">
+
+<div class="topbar">
+ <div class="tscan"></div>
+ <div class="brand">
+ <div class="blogo">JNC<div class="blogo-ring"></div></div>
+ <div>
+ <div class="bname">JNC TECHLABS — Mission Control</div>
+ <div class="bsrv">openclaw-9czz · srv1508811.hostinger · v2026.3.22</div>
+ </div>
+ </div>
+ <div class="tpills">
+ <div class="pill"><div class="pdot pg"></div>All systems nominal</div>
+ <div class="pill"><div class="pdot pg"></div>7 agents online</div>
+ <div class="pill"><div class="pdot pa"></div>15 crons paused</div>
+ </div>
+ <div class="tright">
+ <div class="clock" id="clk">--:--:--</div>
+ <div class="dstr" id="dstr">IST · Asia/Calcutta</div>
+ </div>
+</div>
+
+<div class="kpi-row">
+ <div class="kpi" style="animation-delay:.04s">
+ <div class="kstripe" style="background:var(--g)"></div>
+ <div class="klabel">AGENTS ONLINE</div>
+ <div class="kval">7</div>
+ <div class="ksub">2 main · 5 sub-agents</div>
+ <div class="kbadge kb-g">All responsive</div>
+ </div>
+ <div class="kpi" style="animation-delay:.09s">
+ <div class="kstripe" style="background:var(--acc)"></div>
+ <div class="klabel">PRIMARY MODEL</div>
+ <div class="kvalsm">Grok 4.20</div>
+ <div class="ksub">reasoning · 200k context</div>
+ <div class="kbadge kb-b">xai-custom</div>
+ </div>
+ <div class="kpi" style="animation-delay:.14s">
+ <div class="kstripe" style="background:var(--b)"></div>
+ <div class="klabel">UPTIME</div>
+ <div class="kval" id="kuptime">0h 0m</div>
+ <div class="ksub">Container healthy</div>
+ <div class="kbadge kb-g">Docker running</div>
+ </div>
+ <div class="kpi" style="animation-delay:.19s">
+ <div class="kstripe" style="background:var(--a)"></div>
+ <div class="klabel">X ACCOUNT</div>
+ <div class="kvalsm">@iayushchoudhary</div>
+ <div class="ksub">Jack on standby</div>
+ <div class="kbadge kb-a">Post queue empty</div>
+ </div>
+</div>
+
+<div class="bodygrid">
+ <div class="panel">
+ <div class="ph">
+ <div class="pt">AGENT ROSTER</div>
+ <div class="pact" onclick="sendPrompt('Give me a full status report from all 7 agents')">Full report ↗</div>
+ </div>
+ <div class="agrid">
+
+ <div class="acard awide sel" id="ac-hulk" onclick="pick('hulk',this)">
+ <div class="astripe" style="background:#BA7517"></div>
+ <div class="awide-body">
+ <div>
+ <div class="atop" style="margin-bottom:9px">
+ <div class="av avo" style="background:#FAEEDA;color:#633806;width:42px;height:42px;font-size:13px">HK</div>
+ <div>
+ <div class="an" style="font-size:15px">Hulk</div>
+ <div class="ar">COO · main agent · Grok 4.20</div>
+ </div>
+ </div>
+ <div class="atask" style="font-size:12px;white-space:normal;margin-bottom:10px">Coordinating JNC TECHLABS operations across all 7 agents</div>
+ <div class="abarbg" style="height:4px"><div class="abar" style="width:72%;background:#BA7517;height:4px"></div></div>
+ <div class="afoot" style="margin-top:4px"><div class="afl">Active · web chat · Telegram</div><div class="afr" style="font-weight:600;color:#BA7517">72%</div></div>
+ </div>
+ <div>
+ <div class="awide-stats">
+ <div class="astat"><div class="astat-v" style="color:var(--g)">2</div><div class="astat-l">Active sessions</div></div>
+ <div class="astat"><div class="astat-v">5</div><div class="astat-l">Sub-agents</div></div>
+ <div class="astat"><div class="astat-v" style="color:var(--acc)">200k</div><div class="astat-l">Context</div></div>
+ </div>
+ </div>
+ </div>
+ </div>
+
+ <div class="acard" id="ac-jarvis" onclick="pick('jarvis',this)">
+ <div class="astripe" style="background:#534AB7"></div>
+ <div class="atop">
+ <div class="av avo" style="background:#EEEDFE;color:#3C3489">JV</div>
+ <div><div class="an">Jarvis</div><div class="ar">CTO · workspace-jarvis · Grok 4.20</div></div>
+ </div>
+ <div class="atask">Technical infrastructure oversight</div>
+ <div class="abarbg"><div class="abar" style="width:55%;background:#534AB7"></div></div>
+ <div class="afoot"><div class="afl">Active · web chat</div><div class="afr">55%</div></div>
+ </div>
+
+ <div class="acard" id="ac-forge" onclick="pick('forge',this)">
+ <div class="astripe" style="background:#1D9E75"></div>
+ <div class="atop">
+ <div class="av avi" style="background:#E1F5EE;color:#085041">FG</div>
+ <div><div class="an">Forge</div><div class="ar">Web Developer · Grok 4.1</div></div>
+ </div>
+ <div class="atask">Standby · awaiting deployment task</div>
+ <div class="abarbg"><div class="abar" style="width:0%;background:#1D9E75"></div></div>
+ <div class="afoot"><div class="afl">Idle</div><div class="afr">—</div></div>
+ </div>
+
+ <div class="acard" id="ac-jack" onclick="pick('jack',this)">
+ <div class="astripe" style="background:#2563eb"></div>
+ <div class="atop">
+ <div class="av avi" style="background:#E6F1FB;color:#0C447C">JK</div>
+ <div><div class="an">Jack</div><div class="ar">X Content Writer · Grok 4.1</div></div>
+ </div>
+ <div class="atask">Standby · post schedule empty</div>
+ <div class="abarbg"><div class="abar" style="width:0%;background:#2563eb"></div></div>
+ <div class="afoot"><div class="afl">Idle</div><div class="afr">—</div></div>
+ </div>
+
+ <div class="acard" id="ac-aish" onclick="pick('aish',this)">
+ <div class="astripe" style="background:#D4537E"></div>
+ <div class="atop">
+ <div class="av avi" style="background:#FBEAF0;color:#72243E">AI</div>
+ <div><div class="an">Aish</div><div class="ar">Graphic Designer · Grok 4.1</div></div>
+ </div>
+ <div class="atask">Standby · awaiting design brief from Hulk</div>
+ <div class="abarbg"><div class="abar" style="width:0%;background:#D4537E"></div></div>
+ <div class="afoot"><div class="afl">Idle</div><div class="afr">—</div></div>
+ </div>
+
+ <div class="acard" id="ac-mark" onclick="pick('mark',this)">
+ <div class="astripe" style="background:#639922"></div>
+ <div class="atop">
+ <div class="av avi" style="background:#EAF3DE;color:#27500A">MK</div>
+ <div><div class="an">Mark</div><div class="ar">Researcher · Grok 4.1</div></div>
+ </div>
+ <div class="atask">Standby · research queue empty</div>
+ <div class="abarbg"><div class="abar" style="width:0%;background:#639922"></div></div>
+ <div class="afoot"><div class="afl">Idle</div><div class="afr">—</div></div>
+ </div>
+
+ <div class="acard" id="ac-nova" onclick="pick('nova',this)">
+ <div class="astripe" style="background:#D85A30"></div>
+ <div class="atop">
+ <div class="av avi" style="background:#FAECE7;color:#712B13">NV</div>
+ <div><div class="an">Nova</div><div class="ar">Analyst · Grok 4.1</div></div>
+ </div>
+ <div class="atask">Standby · analytics queue empty</div>
+ <div class="abarbg"><div class="abar" style="width:0%;background:#D85A30"></div></div>
+ <div class="afoot"><div class="afl">Idle · Sheets API ready</div><div class="afr">—</div></div>
+ </div>
+
+ </div>
+ </div>
+
+ <div style="display:flex;flex-direction:column;gap:13px">
+ <div class="panel" style="flex:1;animation-delay:.1s">
+ <div class="ph">
+ <div class="pt">LIVE FEED</div>
+ <div style="display:flex;align-items:center;gap:4px;font-size:10px;color:var(--g)"><div class="pdot pg" style="width:5px;height:5px"></div>streaming</div>
+ </div>
+ <div class="logwrap" id="logfeed">
+ <div class="logrow"><div class="logt">10:35</div><div class="lchip lc-sys">SYS</div><div class="lmsg">OpenClaw v2026.3.22 started. Container healthy.</div></div>
+ <div class="logrow"><div class="logt">10:36</div><div class="lchip lc-hulk">HULK</div><div class="lmsg">Workspace loaded. Grok 4.20 reasoning active.</div></div>
+ <div class="logrow"><div class="logt">10:37</div><div class="lchip lc-jarvis">JARVIS</div><div class="lmsg">workspace-jarvis mounted. CTO identity confirmed.</div></div>
+ <div class="logrow"><div class="logt">10:38</div><div class="lchip lc-sys">SYS</div><div class="lmsg">Telegram @JNCTECHLABSBOT online. Allowlist active.</div></div>
+ <div class="logrow"><div class="logt">10:39</div><div class="lchip lc-sys">SYS</div><div class="lmsg">Oxylabs disabled. Native Grok knowledge in use.</div></div>
+ <div class="logrow"><div class="logt">10:40</div><div class="lchip lc-hulk">HULK</div><div class="lmsg">Mission Control v4 deployed. All clear.</div></div>
+ </div>
+ </div>
+ <div class="panel" style="animation-delay:.15s">
+ <div class="ph"><div class="pt">INFRASTRUCTURE</div></div>
+ <div class="ilist">
+ <div class="ir"><div class="irl">VPS</div><div class="irv iok"><div class="pdot pg" style="width:5px;height:5px"></div>srv1508811 online</div></div>
+ <div class="ir"><div class="irl">Container</div><div class="irv iok">openclaw-9czz running</div></div>
+ <div class="ir"><div class="irl">Primary model</div><div class="irv imono">grok-4.20-0309-reasoning</div></div>
+ <div class="ir"><div class="irl">Fallback</div><div class="irv imono">grok-4-1-fast-reasoning</div></div>
+ <div class="ir"><div class="irl">Telegram</div><div class="irv iok">connected · allowlist</div></div>
+ <div class="ir"><div class="irl">Web chat</div><div class="irv iok">Hulk + Jarvis active</div></div>
+ <div class="ir"><div class="irl">Cron engine</div><div class="irv iwarn">15 jobs paused</div></div>
+ </div>
+ </div>
+ </div>
+</div>
+
+<div class="botgrid">
+
+ <div class="panel" style="animation-delay:.2s">
+ <div class="ph">
+ <div class="pt">QUICK COMMANDS</div>
+ <div style="font-size:10px;color:var(--ink3)">fire directly to Hulk</div>
+ </div>
+ <button class="qabtn" onclick="sendPrompt('Hulk give me a full team status report right now')">
+ <div class="qa-dot" style="background:var(--g)"></div>
+ <div><div class="qa-label">Team status report</div><div class="qa-sub">Full status from all 7 agents</div></div>
+ <div class="qa-arr">↗</div>
+ </button>
+ <button class="qabtn" onclick="sendPrompt('Hulk post a high quality tweet on X about AI trends today via Jack')">
+ <div class="qa-dot" style="background:#2563eb"></div>
+ <div><div class="qa-label">Post tweet via Jack</div><div class="qa-sub">AI trend post · approve before sending</div></div>
+ <div class="qa-arr">↗</div>
+ </button>
+ <button class="qabtn" onclick="sendPrompt('Jarvis run a full infrastructure health check on the VPS and Docker')">
+ <div class="qa-dot" style="background:#534AB7"></div>
+ <div><div class="qa-label">Infrastructure health check</div><div class="qa-sub">Jarvis · VPS + Docker diagnostics</div></div>
+ <div class="qa-arr">↗</div>
+ </button>
+ <button class="qabtn" onclick="sendPrompt('Mark research the top 5 AI news stories from today and brief Hulk')">
+ <div class="qa-dot" style="background:#639922"></div>
+ <div><div class="qa-label">Daily AI briefing</div><div class="qa-sub">Mark researches · Hulk delivers</div></div>
+ <div class="qa-arr">↗</div>
+ </button>
+ <button class="qabtn" onclick="sendPrompt('Help me re-enable my 15 cron jobs in OpenClaw one by one')">
+ <div class="qa-dot" style="background:var(--a)"></div>
+ <div><div class="qa-label">Enable cron jobs</div><div class="qa-sub">15 jobs waiting · configure schedules</div></div>
+ <div class="qa-arr">↗</div>
+ </button>
+ </div>
+
+ <div class="panel" style="animation-delay:.25s">
+ <div class="ph">
+ <div class="pt">CRON SCHEDULE</div>
+ <div class="badge boff" style="font-size:10px">15 paused</div>
+ </div>
+ <div class="cronwarn">
+ <div style="font-size:11px;color:var(--a);font-weight:600">Jobs paused · pending config cleanup</div>
+ <div style="font-size:10px;color:var(--ink3);margin-top:2px">Re-enable when all issues resolved</div>
+ </div>
+ <div class="cronrow"><div><div class="cn">Daily X report</div><div class="ct">9:30 PM IST · daily</div></div><div class="badge boff">paused</div></div>
+ <div class="cronrow"><div><div class="cn">Morning briefing</div><div class="ct">8:00 AM IST · daily</div></div><div class="badge boff">paused</div></div>
+ <div class="cronrow"><div><div class="cn">Market research</div><div class="ct">10:00 AM IST · daily</div></div><div class="badge boff">paused</div></div>
+ <div class="cronrow"><div><div class="cn">Content schedule</div><div class="ct">9:30 AM IST · daily</div></div><div class="badge boff">paused</div></div>
+ <div class="cronrow"><div><div class="cn">+ 11 more jobs</div><div class="ct">Various schedules</div></div><div class="badge boff">paused</div></div>
+ <button class="ibtn" style="margin-top:10px" onclick="sendPrompt('Help me re-enable my 15 cron jobs in OpenClaw')">Enable cron jobs ↗</button>
+ </div>
+
+ <div class="panel" style="animation-delay:.3s">
+ <div class="ph"><div class="pt">AGENT DETAIL</div></div>
+ <div id="inspect"><div class="iempty">Click any agent card<br>to inspect their profile</div></div>
+ </div>
+
+</div>
+</div>
+
+<script>
+const AD={
+ hulk:{name:'Hulk',role:'COO · main agent',model:'grok-4.20-0309-reasoning',ws:'workspace (default)',sess:'agent:main:main',status:'Active',task:'Coordinating JNC TECHLABS operations across all 7 agents',pct:72,c:'#BA7517',bg:'#FAEEDA',tc:'#633806',fb:'grok-4-1-fast-reasoning'},
+ jarvis:{name:'Jarvis',role:'CTO · own workspace',model:'grok-4.20-0309-reasoning',ws:'workspace-jarvis',sess:'agent:jarvis:main',status:'Active',task:'Technical infrastructure oversight',pct:55,c:'#534AB7',bg:'#EEEDFE',tc:'#3C3489',fb:'grok-4-1-fast-reasoning'},
+ forge:{name:'Forge',role:'Web Developer',model:'grok-4-1-fast-reasoning',ws:'workspace-forge',sess:'—',status:'Standby',task:'Awaiting deployment task from Jarvis',pct:0,c:'#1D9E75',bg:'#E1F5EE',tc:'#085041',fb:'—'},
+ jack:{name:'Jack',role:'X Content Writer',model:'grok-4-1-fast-reasoning',ws:'workspace-jack',sess:'—',status:'Standby',task:'Awaiting post schedule from Hulk',pct:0,c:'#2563eb',bg:'#E6F1FB',tc:'#0C447C',fb:'—'},
+ aish:{name:'Aish',role:'Graphic Designer',model:'grok-4-1-fast-reasoning',ws:'workspace-aish',sess:'—',status:'Standby',task:'Awaiting design brief from Hulk',pct:0,c:'#D4537E',bg:'#FBEAF0',tc:'#72243E',fb:'—'},
+ mark:{name:'Mark',role:'Researcher',model:'grok-4-1-fast-reasoning',ws:'workspace-mark',sess:'—',status:'Standby',task:'Awaiting research task from Hulk',pct:0,c:'#639922',bg:'#EAF3DE',tc:'#27500A',fb:'—'},
+ nova:{name:'Nova',role:'Analyst',model:'grok-4-1-fast-reasoning',ws:'workspace-nova',sess:'—',status:'Standby',task:'Awaiting analytics task from Hulk',pct:0,c:'#D85A30',bg:'#FAECE7',tc:'#712B13',fb:'—'}
+};
+
+function pick(id,el){
+ document.querySelectorAll('.acard').forEach(c=>c.classList.remove('sel'));
+ el.classList.add('sel');
+ const a=AD[id];
+ const sc=a.status==='Active'?'var(--g)':'var(--ink3)';
+ document.getElementById('inspect').innerHTML=`
+ <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px">
+ <div class="iav" style="background:${a.bg};color:${a.tc};border:2px solid ${a.c}44">${a.name.slice(0,2).toUpperCase()}</div>
+ <div style="flex:1;min-width:0">
+ <div style="font-size:15px;font-weight:600;color:var(--ink)">${a.name}</div>
+ <div style="font-size:11px;color:var(--ink3);margin-top:1px">${a.role}</div>
+ </div>
+ <div style="font-size:11px;font-weight:700;color:${sc}">${a.status}</div>
+ </div>
+ <div class="inspect-row"><div class="ik">Model</div><div class="iv">${a.model}</div></div>
+ <div class="inspect-row"><div class="ik">Workspace</div><div class="iv">${a.ws}</div></div>
+ <div class="inspect-row"><div class="ik">Session key</div><div class="iv" style="font-size:9px">${a.sess}</div></div>
+ <div class="inspect-row"><div class="ik">Fallback</div><div class="iv">${a.fb}</div></div>
+ <div class="itaskbox">
+ <div style="font-size:10px;color:var(--ink3);margin-bottom:4px;font-weight:700;letter-spacing:0.07em">CURRENT TASK</div>
+ <div style="font-size:12px;color:var(--ink);line-height:1.5">${a.task}</div>
+ ${a.pct>0?`<div class="abarbg" style="margin-top:8px"><div class="abar" style="width:${a.pct}%;background:${a.c}"></div></div><div style="text-align:right;font-size:10px;color:var(--ink3);margin-top:3px">${a.pct}%</div>`:''}
+ </div>
+ <button class="ibtn" onclick="sendPrompt('Assign a task to ${a.name} right now')">Assign task to ${a.name} ↗</button>
+ `;
+}
+
+function tick(){
+ const i=new Date(new Date().toLocaleString('en-US',{timeZone:'Asia/Kolkata'}));
+ document.getElementById('clk').textContent=[i.getHours(),i.getMinutes(),i.getSeconds()].map(v=>String(v).padStart(2,'0')).join(':');
+ const d=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'],m=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+ document.getElementById('dstr').textContent=`${d[i.getDay()]} ${i.getDate()} ${m[i.getMonth()]} · IST`;
+}
+setInterval(tick,1000);tick();
+
+let up=0;
+setInterval(()=>{up++;document.getElementById('kuptime').textContent=`${Math.floor(up/3600)}h ${Math.floor((up%3600)/60)}m`;},1000);
+
+const LL=[
+ {c:'lc-hulk',n:'HULK',m:'Monitoring 7-agent roster. COO operations nominal.'},
+ {c:'lc-jarvis',n:'JARVIS',m:'VPS check complete. Docker container healthy.'},
+ {c:'lc-sys',n:'SYS',m:'Context: 0 / 200k tokens used this session.'},
+ {c:'lc-mark',n:'MARK',m:'Research queue empty. Grok native knowledge ready.'},
+ {c:'lc-nova',n:'NOVA',m:'Analytics standby. Google Sheets API configured.'},
+ {c:'lc-jack',n:'JACK',m:'X API active. Tweepy ready. No pending posts.'},
+ {c:'lc-aish',n:'AISH',m:'Design queue clear. Awaiting brief from Hulk.'},
+ {c:'lc-forge',n:'FORGE',m:'GitHub + Vercel tokens loaded. Deploy ready.'},
+ {c:'lc-sys',n:'SYS',m:'Heartbeat tick. All agents responding normally.'},
+ {c:'lc-hulk',n:'HULK',m:'No pending tasks. Standing by for Ayush (CEO).'},
+];
+let li=0;
+setInterval(()=>{
+ const f=document.getElementById('logfeed');
+ const l=LL[li%LL.length];
+ const i=new Date(new Date().toLocaleString('en-US',{timeZone:'Asia/Kolkata'}));
+ const t=[i.getHours(),i.getMinutes()].map(v=>String(v).padStart(2,'0')).join(':');
+ const r=document.createElement('div');
+ r.className='logrow';
+ r.innerHTML=`<div class="logt">${t}</div><div class="lchip ${l.c}">${l.n}</div><div class="lmsg">${l.m}</div>`;
+ f.appendChild(r);
+ f.scrollTop=f.scrollHeight;
+ if(f.children.length>20)f.removeChild(f.firstChild);
+ li++;
+},3800);
+
+pick('hulk',document.getElementById('ac-hulk'));
+</script>
